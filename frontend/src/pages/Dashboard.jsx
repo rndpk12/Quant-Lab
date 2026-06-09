@@ -530,6 +530,10 @@ export default function Dashboard() {
   const [marketData, setMarketData] = useState(null);
 
   useEffect(() => {
+  console.log("Market Data:", marketData);
+}, [marketData]);
+
+  useEffect(() => {
   async function loadMarket() {
     try {
       const data =
@@ -556,8 +560,11 @@ export default function Dashboard() {
     if (tickers.length === 0) { setError("Select at least one stock."); return; }
     setLoading(true); setError(null); setPortfolio(null);
     try {
-      const res = await axios.post("http://127.0.0.1:8000/api/portfolio/optimize", { tickers, strategy });
-      setPortfolio(res.data);
+      const res = await optimizePortfolio({
+  tickers,
+  strategy,
+});
+      setPortfolio(res);
     } catch (err) {
       const msg = err?.response?.data?.detail || err.message || "Unknown error";
       setError(`${msg}`);
@@ -726,7 +733,9 @@ export default function Dashboard() {
     fontFamily: mono
   }}
 >
-  {marketData?.[m.key]?.value?.toLocaleString() ?? "-"}
+  {marketData?.[m.key]
+  ? marketData[m.key].value.toLocaleString()
+  : "Loading..."}
 </div>
               </div>
               <span
