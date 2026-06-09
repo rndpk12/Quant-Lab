@@ -3,7 +3,9 @@ uvicorn
 yfinance
 pandas
 numpy
+pydantic
 PyPortfolioOpt
 cvxpy
 scipy
-pydantic
+requests
+packaging
